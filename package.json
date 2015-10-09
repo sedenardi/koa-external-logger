@@ -1,8 +1,8 @@
 {
-  "name": "koa-logger",
-  "description": "Logging middleware for koa",
-  "repository": "koajs/logger",
-  "version": "1.3.0",
+  "name": "koa-external-logger",
+  "description": "Logging middleware for koa that exposes the log",
+  "repository": "https://github.com/sedenardi/koa-external-logger.git",
+  "version": "1.0.0",
   "keywords": [
     "koa",
     "middleware",
@@ -29,6 +29,7 @@
     "bytes": "1",
     "chalk": "^1.0.0",
     "humanize-number": "~0.0.1",
-    "passthrough-counter": "^1.0.0"
+    "passthrough-counter": "^1.0.0",
+    "co": "^4.6.0"
   }
 }

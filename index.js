@@ -6,6 +6,7 @@ var Counter = require('passthrough-counter');
 var humanize = require('humanize-number');
 var bytes = require('bytes');
 var chalk = require('chalk');
+var co = require('co');
 
 /**
  * TTY check for dev format.
@@ -36,20 +37,27 @@ var colorCodes = {
  */
 
 function dev(opts) {
+  opts = opts || {};
+  opts.consoleEnabled = typeof opts.consoleEnabled === 'boolean' ? 
+    opts.consoleEnabled : true;
+  opts.externalLogger = opts.externalLogger || null;
+
   return function *logger(next) {
     // request
-    var start = new Date;
-    console.log('  ' + chalk.gray('<--')
-      + ' ' + chalk.bold('%s')
-      + ' ' + chalk.gray('%s'),
-        this.method,
-        this.originalUrl);
+    var start = Date.now();
+    if (opts.consoleEnabled) {
+      console.log('  ' + chalk.gray('<--')
+        + ' ' + chalk.bold('%s')
+        + ' ' + chalk.gray('%s'),
+          this.method,
+          this.originalUrl);  
+    }    
 
     try {
       yield next;
     } catch (err) {
       // log uncaught downstream errors
-      log(this, start, null, err);
+      yield log(this, start, null, err, null, opts);
       throw err;
     }
 
@@ -79,7 +87,9 @@ function dev(opts) {
     function done(event){
       res.removeListener('finish', onfinish);
       res.removeListener('close', onclose);
-      log(ctx, start, counter ? counter.length : length, null, event);
+      co(function*() {
+        yield log(ctx, start, counter ? counter.length : length, null, event, opts);
+      }).catch(function(err) { });      
     }
   }
 }
@@ -88,7 +98,7 @@ function dev(opts) {
  * Log helper.
  */
 
-function log(ctx, start, len, err, event) {
+function* log(ctx, start, len, err, event, opts) {
   // get the status code of the response
   var status = err
     ? (err.status || 500)
@@ -105,24 +115,40 @@ function log(ctx, start, len, err, event) {
   } else if (null == len) {
     length = '-';
   } else {
-    length = bytes(len);
+    length = len;
   }
 
   var upstream = err ? chalk.red('xxx')
     : event === 'close' ? chalk.yellow('-x-')
-    : chalk.gray('-->')
+    : chalk.gray('-->');
 
-  console.log('  ' + upstream
-    + ' ' + chalk.bold('%s')
-    + ' ' + chalk.gray('%s')
-    + ' ' + chalk[color]('%s')
-    + ' ' + chalk.gray('%s')
-    + ' ' + chalk.gray('%s'),
-      ctx.method,
-      ctx.originalUrl,
-      status,
-      time(start),
-      length);
+  var duration = Date.now() - start;
+
+  if (opts.externalLogger) {
+    var logObj = {
+      time: start,
+      originalUrl: ctx.originalUrl,
+      status: status,
+      duration: duration,
+      length: length,
+      context: ctx
+    };
+    yield opts.externalLogger(logObj);
+  }
+
+  if (opts.consoleEnabled) {
+    console.log('  ' + upstream
+      + ' ' + chalk.bold('%s')
+      + ' ' + chalk.gray('%s')
+      + ' ' + chalk[color]('%s')
+      + ' ' + chalk.gray('%s')
+      + ' ' + chalk.gray('%s'),
+        ctx.method,
+        ctx.originalUrl,
+        status,
+        time(duration),
+        bytes(length));
+  }
 }
 
 /**
@@ -131,8 +157,7 @@ function log(ctx, start, len, err, event) {
  * in seconds otherwise.
  */
 
-function time(start) {
-  var delta = new Date - start;
+function time(delta) {
   delta = delta < 10000
     ? delta + 'ms'
     : Math.round(delta / 1000) + 's';
