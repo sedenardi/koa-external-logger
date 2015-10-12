@@ -17,7 +17,7 @@ Fork of [koa-logger](https://github.com/koajs/logger) that exposes the logging i
 ## Installation
 
 ```js
-$ npm install koa-external-logger
+[npm install koa-external-logger](https://www.npmjs.com/package/koa-external-logger)
 ```
 
 ## Example
@@ -46,8 +46,9 @@ app.use(logger({
 * `originalUrl` - Requested URL.
 * `status` - HTTP status code.
 * `duration` - Duration of request in ms.
-* `length` - Length of response in bytes.
+* `length` - Length of response in bytes. This will be 0 if it's an error.
 * `context` - [koa context object](https://github.com/koajs/koa/blob/master/docs/api/context.md) reference.
+* `error` - Error object.
 
 ## Notes
 

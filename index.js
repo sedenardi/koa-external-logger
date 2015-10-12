@@ -113,7 +113,7 @@ function* log(ctx, start, len, err, event, opts) {
   if (~[204, 205, 304].indexOf(status)) {
     length = '';
   } else if (null == len) {
-    length = '-';
+    length = 0;
   } else {
     length = len;
   }
@@ -131,7 +131,8 @@ function* log(ctx, start, len, err, event, opts) {
       status: status,
       duration: duration,
       length: length,
-      context: ctx
+      context: ctx,
+      error: err
     };
     yield opts.externalLogger(logObj);
   }
