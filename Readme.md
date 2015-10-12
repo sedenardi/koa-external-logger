@@ -17,7 +17,7 @@ Fork of [koa-logger](https://github.com/koajs/logger) that exposes the logging i
 ## Installation
 
 ```js
-[npm install koa-external-logger](https://www.npmjs.com/package/koa-external-logger)
+npm install koa-external-logger
 ```
 
 ## Example
