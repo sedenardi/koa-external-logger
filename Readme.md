@@ -51,7 +51,6 @@ app.use(logger({
 * `length` - Length of response in bytes. This will be 0 if it's an error.
 * `context` - [koa context object](https://github.com/koajs/koa/blob/master/docs/api/context.md) reference.
 * `error` - Error object.
-+
 
 ## Notes
 
