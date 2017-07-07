@@ -3,6 +3,8 @@
 
 Fork of [koa-logger](https://github.com/koajs/logger) that exposes the logging information for storage and/or processing.
 
+___Notice: `koa-external-logger@2` supports `koa@2`; if you want to use this module with `koa@1`, please use `koa-external-logger@1`.___
+
 ```
 <-- GET /
 --> GET / 200 835ms 746b
@@ -17,27 +19,27 @@ Fork of [koa-logger](https://github.com/koajs/logger) that exposes the logging i
 ## Installation
 
 ```js
-npm install koa-external-logger
+$ npm install koa-external-logger
 ```
 
 ## Example
 
 ```js
-var logger = require('koa-external-logger');
-var koa = require('koa');
+const logger = require('koa-logger')
+const Koa = require('koa')
 
-var app = koa();
+const app = new Koa()
 app.use(logger({
-  externalLogger: function*(logObj) {
-    //perform some action or yield to another generator/promise
+  externalLogger: async function(logObj) {
+    //perform some action or await to another promise
   },
-  consoleEnabled: true
-}));
+  consoleEnabled: process.env.NODE_ENV !== 'production'
+}))
 ```
 
 ## Options
 
-* `externalLogger` - optional - Generator function that takes a logging object as a parameter.
+* `externalLogger` - optional - Async function/promise that takes a logging object as a parameter.
 * `consoleEnabled` - optional, default: true - If set to false, nothing will be sent to console.log.
 
 ## Log Object
@@ -49,6 +51,7 @@ app.use(logger({
 * `length` - Length of response in bytes. This will be 0 if it's an error.
 * `context` - [koa context object](https://github.com/koajs/koa/blob/master/docs/api/context.md) reference.
 * `error` - Error object.
++
 
 ## Notes
 

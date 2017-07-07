@@ -1,9 +1,32 @@
 
+3.0.1 / 2017-06-30
+==================
+
+ * Fixes error 'chalk[color] does not return function' when using custom (#61)
+
+3.0.0 / 2017-05-16
+==================
+
+ * use async function
+ * update bytes to 2.x
+
+2.0.1 / 2017-01-12
+==================
+
+ * add color for code 0
+ * bump deps
+
+2.0.0 / 2015-11-19
+==================
+
+* add: support for koa 2
+* remove: support for koa 1
+
 1.2.2 / 2014-07-05
 ==================
 
  * fix: stop using octal literals for strict mode
- 
+
 1.2.1 / 2014-05-13
 ==================
 
