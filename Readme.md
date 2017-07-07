@@ -25,7 +25,7 @@ $ npm install koa-external-logger
 ## Example
 
 ```js
-const logger = require('koa-logger')
+const logger = require('koa-external-logger')
 const Koa = require('koa')
 
 const app = new Koa()
