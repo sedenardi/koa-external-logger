@@ -41,6 +41,7 @@ app.use(logger({
 
 * `externalLogger` - optional - Async function/promise that takes a logging object as a parameter.
 * `consoleEnabled` - optional, default: true - If set to false, nothing will be sent to console.log.
+* `truncateUrlQuery` - optional, default: false - If set, the query portion of the URL sent to console.log will be truncated to the first 20 characters (to not pollute the console).
 
 ## Log Object
 

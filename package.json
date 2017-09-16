@@ -2,7 +2,7 @@
   "name": "koa-external-logger",
   "description": "Logging middleware for koa that exposes the log",
   "repository": "https://github.com/sedenardi/koa-external-logger.git",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "keywords": [
     "koa",
     "middleware",
