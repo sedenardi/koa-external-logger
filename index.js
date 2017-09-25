@@ -30,7 +30,7 @@ const colorCodes = {
 
 function truncateUrlQuery (url) {
   const parts = url.split('?');
-  return parts[0] + (parts[1] ? `${parts[1].slice(0, 20)}...` : '');
+  return parts[0] + (parts[1] ? `?${parts[1].slice(0, 20)}...` : '');
 }
 
 /**
