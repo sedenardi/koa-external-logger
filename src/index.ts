@@ -123,7 +123,7 @@ function dev (opts?: Options): Middleware {
     if (length == null && body && body.readable) {
       ctx.body = body
         .pipe(counter = Counter())
-        .on('error', ctx.onerror);
+        .on('error', (err) => ctx.onerror(err));
     }
 
     // log when the response is finished or closed,
