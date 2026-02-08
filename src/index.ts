@@ -5,23 +5,22 @@ import type { Context, Middleware, Next } from 'koa';
 import type { ServerResponse } from 'http';
 
 import Counter = require('passthrough-counter');
-
 import humanize = require('humanize-number');
-
 import bytes = require('bytes');
-
 import chalk = require('chalk');
 
 /**
  * Expose logger.
  */
-
 export = dev;
+
+declare namespace dev {
+  export { LogObject };
+}
 
 /**
  * Color map.
  */
-
 const colorCodes: Record<number, string> = {
   7: 'magenta',
   5: 'red',
@@ -80,7 +79,6 @@ function truncateUrlQuery (url: string): string {
 /**
  * Development logger.
  */
-
 function dev (opts?: Options): Middleware {
   const normalizedOpts: NormalizedOptions = {
     consoleEnabled: typeof opts?.consoleEnabled === 'boolean'
@@ -147,7 +145,6 @@ function dev (opts?: Options): Middleware {
 /**
  * Log helper.
  */
-
 async function log (
   ctx: Context,
   start: number,
@@ -225,7 +222,6 @@ async function log (
  * In milliseconds if less than 10 seconds,
  * in seconds otherwise.
  */
-
 function time (delta: number): string {
   return humanize(delta < 10000
     ? delta + 'ms'
